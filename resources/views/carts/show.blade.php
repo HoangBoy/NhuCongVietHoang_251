@@ -8,7 +8,7 @@
     <p>Danh mục: {{ $product->category->name }}</p>
     @auth
         <!-- Form để thêm sản vào giỏ hàng -->
-        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+        <form action="{{ route('carts.add', $product->id) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
         </form>

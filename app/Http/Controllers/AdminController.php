@@ -17,10 +17,12 @@ class AdminController extends Controller
     {
     return app(CategoryController::class)->index();
     }
-    }
     //Người bình thường
-public function show_normal(Product $product)
-{
-// Trả về view cho người dùng bình thường
-return view('products.show', compact('product'));
+    public function show_normal(Product $product)
+    {
+    // Trả về view cho người dùng bình thường
+    return view('products.show', compact('product'));
+    }
 }
+
+    

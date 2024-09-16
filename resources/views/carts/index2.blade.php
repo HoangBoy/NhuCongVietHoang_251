@@ -36,14 +36,14 @@
             <td>{{ $details['quantity'] }}</td>
             <td>{{ $details['price'] }}</td>
             <td>{{ $details['category'] }}</td>
-            <td>
+            <!-- <td>
             <a href="{{ route('products.show', $id) }}" class="btn btn-primary">View Details</a>
                 <form action="{{ route('cart.remove', $id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Xoá</button>
                 </form>
-            </td>
+            </td> -->
     </tr>
     @endforeach
 </tbody>    

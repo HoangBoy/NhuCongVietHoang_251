@@ -15,9 +15,9 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Associate cart with a user
-            $table->json('items'); // Store cart items as JSON
-            $table->timestamps();  // Created at and Updated at fields
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+            // $table->json('items'); // Store cart items as JSON
         });
     }
 

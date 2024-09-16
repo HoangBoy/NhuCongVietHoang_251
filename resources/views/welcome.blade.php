@@ -14,8 +14,9 @@
     <p class="card-text">Category: {{ optional($product->category)->name }}</p>
     <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary">View Details</a>
         <!-- Add to Cart Form -->
-        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+        <form action="{{ route('carts.store', $product->id) }}" method="POST">
                         @csrf
+                         <!-- Optional: Allow the user to select quantity -->
                         <button type="submit" class="btn btn-success">Add to Cart</button>
         </form>
     </div>

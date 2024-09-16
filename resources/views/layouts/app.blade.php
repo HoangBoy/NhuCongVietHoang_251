@@ -28,7 +28,7 @@
     <!-- Cart Link -->
     @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('cart.index') }}">Cart 
+                    <a class="nav-link" href="{{ route('carts.index') }}">Cart 
                        
                     </a>
                 </li>

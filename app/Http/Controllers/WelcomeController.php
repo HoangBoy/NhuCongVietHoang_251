@@ -12,7 +12,6 @@ class WelcomeController extends Controller
     {
         // Lấy tất cả sản phẩm từ database và phân trang
         $products = Product::with('category')->paginate(10);
-
         // Trả về view 'welcome' với dữ liệu sản phẩm
         return view('welcome', compact('products'));
     }

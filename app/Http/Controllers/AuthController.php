@@ -72,6 +72,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
+        app(CartController::class)->saveCartToDatabase();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
