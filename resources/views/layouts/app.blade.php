@@ -7,6 +7,8 @@
 <title>@yield('title', 'MyShop')</title>
 <!-- Bao gồm Bootstrap CSS hoặc các file CSS khác -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Thẻ ajax tham chiếu -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -59,6 +61,8 @@ Logout
 <div class="container mt-4">
 @yield('content')
 </div>
+<!-- Nạp script -->
+@stack('scripts')
 <!-- Bao gồm các file JS cần thiết -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" ></script>

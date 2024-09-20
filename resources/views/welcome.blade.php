@@ -16,6 +16,11 @@
         <!-- Add to Cart Form -->
         <form action="{{ route('carts.store', $product->id) }}" method="POST">
                         @csrf
+                        <input type="number" 
+                                   name="quantity" 
+                                   value="1" 
+                                   min="1" 
+                                   class="form-control">
                          <!-- Optional: Allow the user to select quantity -->
                         <button type="submit" class="btn btn-success">Add to Cart</button>
         </form>

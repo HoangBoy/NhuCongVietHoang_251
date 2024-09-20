@@ -23,14 +23,14 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middle
 // Route dành cho admin (sử dụng middleware để kiểm tra quyền)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
-    // Route quản lý sản phẩm
-    Route::resource('/products', ProductController::class);
-
-    // Route quản lý danh mục
-    Route::resource('/categories', CategoryController::class);
-    //Route quản lý giỏ hàng
-    Route::resource('/carts', CartController::class);
+    
+    Route::resources([
+        // Route quản lý sản phẩm
+        '/products' => ProductController::class,
+        // Route quản lý danh mục
+        '/categories' => CategoryController::class,
+    ]);
+    
 });
 
 // Route cho người dùng bình thường
@@ -38,5 +38,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [WelcomeController::class, 'index'])->name('home'); // Đã thêm route home
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show_normal'])->name('products.show');
-    Route::resource('/carts', CartController::class)->middleware(['auth']);
+    
+    Route::resource('carts', CartController::class)
+        ->only(['index','update', 'destroy']);
+
+    //success route model binding
+    Route::post('/carts/{product}', [CartController::class, 'store'])->name('carts.store');
+    Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
+    // Route::resource('/carts', CartController::class)->middleware(['auth']);
 });
