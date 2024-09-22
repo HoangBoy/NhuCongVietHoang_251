@@ -42,6 +42,14 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'nvh',
+                'email' => 'nvh@gmail.com',
+                'password' => Hash::make('abCD@1234'), // Hash the password
+                'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 

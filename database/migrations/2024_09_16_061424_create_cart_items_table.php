@@ -9,17 +9,6 @@ class CreateCartItemsTable extends Migration
 {
     public function up()
     {
-        // Schema::create('cart_items', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->unsignedBigInteger('cart_id')->index();
-        //     $table->unsignedBigInteger('product_id')->index();
-        //     $table->integer('quantity');
-        //     $table->timestamps();
-
-        //     // Tạo khoá ngoại
-        //     $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
-        //     $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-        // });
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cart_id')->constrained('carts')->onDelete('cascade');

@@ -30,8 +30,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // 'role' => 'user',
-            'role' => 'admin',
+            'role' => 'user',
+            // 'role' => 'admin',
         ]);
 
         // Đăng nhập người dùng ngay lập tức

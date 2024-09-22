@@ -256,7 +256,7 @@ class CartController extends Controller
      }
  
      // Lưu giỏ hàng vào cơ sở dữ liệu khi tạo đơn hàng
-     private function saveCartToDatabase()
+     public function saveCartToDatabase()
      {
          $cartItems = session()->get('carts', []);
          if (auth()->check()) {
