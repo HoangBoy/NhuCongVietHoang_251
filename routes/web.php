@@ -8,6 +8,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 
 
 // Trang chủ welcome
@@ -45,5 +46,8 @@ Route::middleware(['auth'])->group(function () {
     //success route model binding
     Route::post('/carts/{product}', [CartController::class, 'store'])->name('carts.store');
     Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
-    // Route::resource('/carts', CartController::class)->middleware(['auth']);
+
+    Route::post('/payment', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
 });
+

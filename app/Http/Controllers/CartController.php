@@ -38,21 +38,6 @@ class CartController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-
-    //cart just add not use create
-    // public function create()
-    // {
-    //     // Lấy danh sách tất cả sản phẩm để người dùng chọn
-    //     $products = Product::all(); // Giả sử bạn có Product model
-    
-    //     // Hiển thị view form thêm mới giỏ hàng
-    //     return view('carts.create', compact('products'));
-    // }
-    
-
-    /**
      * Store a newly created resource in storage.
      */
     // Thêm sản phẩm vào giỏ hàng

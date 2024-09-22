@@ -132,4 +132,26 @@ php artisan migrate:refresh
 php artisan migrate
 php artisan migrate:reset
 php artisan make:controller --resource <name>
+
+php artisan route:list
+
+php artisan route:clear
+php artisan route:cache
+php artisan route:list
+
+
+Xóa Cache Route:
+php artisan route:clear
+Xóa Cache Config:
+php artisan config:clear
+Xóa Cache View:
+php artisan view:clear
+Xóa Cache Application:
+php artisan cache:clear
+Tạo lại Cache
+Sau khi đã xóa cache, bạn có thể tạo lại cache cho route và config để tăng hiệu suất:
+Tạo Cache Route:
+php artisan route:cache
+Tạo Cache Config:
+php artisan config:cache
 ```
