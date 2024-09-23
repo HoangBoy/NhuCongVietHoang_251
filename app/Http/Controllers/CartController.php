@@ -57,7 +57,14 @@ class CartController extends Controller
         
         $requestedQuantity = $request->input('quantity', 1)-$request->input('quantityCurrent', 0);
 
-        // dd($requestedQuantity);
+
+        // Lấy số lượng hiện tại từ request (quantityCurrent)
+        // $quantity = $request->input('quantity', 1);
+        // $quantityCurrent = $request->input('quantityCurrent', 0);
+
+        // // Kiểm tra và tính toán số lượng yêu cầu
+        // $requestedQuantity = ($quantity < $quantityCurrent) ? $quantity : $quantity - $quantityCurrent;
+        // // dd($requestedQuantity);
 
          // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
         if ($carts->has($product->id)) {

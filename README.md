@@ -155,3 +155,21 @@ php artisan route:cache
 Tạo Cache Config:
 php artisan config:cache
 ```
+4. khởi động dự án sau git clone 
+```
+#thư viện framework laravel thường chọn cài ngoài thay vì push lên git sẽ nặng và không cần
+composer install
+#thay cấu hình nhạy cảm db trong .env
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=ecommerce2024
+DB_USERNAME=root
+DB_PASSWORD=
+
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+```
