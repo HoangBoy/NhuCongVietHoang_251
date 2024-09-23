@@ -24,7 +24,7 @@
             <tbody>
                 @php $totalAmount = 0; @endphp
 
-                @foreach($productDetails as $product)
+                @foreach($cartDetails as $product)
                     @php 
                         $quantity = $product['quantity'];
                         $price = $product['price'];
@@ -35,6 +35,7 @@
                     <tr>
                         <td>{{ $product['name'] }}</td>
                         <td>
+                            <input type="hidden" name="cartDetails[{{ $product['id'] }}]" value="{{ json_encode($product) }}" id="product_{{ $product['id'] }}">
                             <input type="number" name="quantity[{{ $product['id'] }}]" value="{{ $quantity }}" min="1" class="form-control" readonly>
                         </td>
                         <td>{{ number_format($price, 0, ',', '.') }} đ</td>
