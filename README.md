@@ -173,3 +173,81 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed
 ```
+5. cách tạo commend link tới một file
+```
+Để tạo một command trong Laravel có thể liên kết tới một file hoặc thực hiện một tác vụ nhất định, bạn có thể thực hiện theo các bước sau:
+
+1. Tạo Laravel Artisan Command
+Sử dụng Artisan để tạo command mới bằng cách chạy lệnh sau trong terminal:
+
+bash
+Sao chép mã
+php artisan make:command LinkFileCommand
+Lệnh này sẽ tạo một file command tại app/Console/Commands/LinkFileCommand.php.
+
+2. Chỉnh sửa Command để xử lý liên kết tới file
+Mở file LinkFileCommand.php và chỉnh sửa nội dung như sau:
+
+php
+Sao chép mã
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+
+class LinkFileCommand extends Command
+{
+    // Tên của command mà bạn sẽ sử dụng trong terminal
+    protected $signature = 'file:link {source} {destination}';
+
+    // Mô tả command
+    protected $description = 'Tạo symbolic link tới một file';
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function handle()
+    {
+        // Lấy giá trị từ các tham số truyền vào command
+        $source = $this->argument('source');
+        $destination = $this->argument('destination');
+
+        // Kiểm tra xem file nguồn có tồn tại không
+        if (!file_exists($source)) {
+            $this->error("File nguồn không tồn tại: {$source}");
+            return 1;
+        }
+
+        // Tạo symbolic link
+        if (symlink($source, $destination)) {
+            $this->info("Symbolic link đã được tạo từ {$source} tới {$destination}");
+        } else {
+            $this->error("Không thể tạo symbolic link");
+        }
+
+        return 0;
+    }
+}
+Trong đoạn mã trên:
+
+file:link là tên của command bạn sẽ sử dụng trong terminal.
+{source} và {destination} là các tham số yêu cầu truyền vào khi bạn chạy command.
+3. Đăng ký Command
+Mở file app/Console/Kernel.php và đăng ký command mới của bạn trong phương thức commands():
+
+protected $commands = [
+    \App\Console\Commands\LinkFileCommand::class,
+];
+4. Sử dụng Command
+Sau khi hoàn thành các bước trên, bạn có thể sử dụng command của mình bằng cách chạy lệnh sau trong terminal:
+
+php artisan file:link /path/to/source/file /path/to/destination/link
+Thao tác này sẽ tạo một symbolic link từ file nguồn tới file đích mà bạn đã chỉ định.
+
+Lưu ý
+Đảm bảo rằng bạn có quyền cần thiết để tạo symbolic link trên hệ thống của bạn.
+Nếu bạn đang sử dụng Windows, bạn cần chạy terminal với quyền "Administrator" để tạo symbolic link.
+```

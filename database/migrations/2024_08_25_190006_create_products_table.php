@@ -14,46 +14,59 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('quantity')->default(0);
+            $table->string('image')->nullable();
             $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->timestamps();
         });
-        //insert data
+        // Insert dữ liệu vào bảng `products`
         DB::table('products')->insert([
             [
-                'name' => 'dell vostro',
-                'description' => 'Máy tính',
-                'price' => '3000',
-                'quantity' => '9'
+                'name' => 'Dell Vostro',
+                'description' => 'Máy tính xách tay',
+                'price' => 3000,
+                'quantity' => 9,
+                'image' => 'dell_vostro.png',
+                'category_id' => 1 // Assuming 'Máy tính' has id 1
             ],
             [
-                'name' => 'dell inspiron',
-                'description' => 'Máy tính',
-                'price' => '2000',
-                'quantity' => '7'
+                'name' => 'Dell Inspiron',
+                'description' => 'Máy tính xách tay',
+                'price' => 2000,
+                'quantity' => 7,
+                'image' => 'dell_inspiron.png',
+                'category_id' => 1
             ],
             [
-                'name' => ' inspiron 3',
-                'description' => 'Máy tính',
-                'price' => '24242',
-                'quantity' => '4'
+                'name' => 'Inspiron 3',
+                'description' => 'Máy tính xách tay',
+                'price' => 24242,
+                'quantity' => 4,
+                'image' => 'inspiron_3.png',
+                'category_id' => 1
             ],
             [
-                'name' => 'ip16',
-                'description' => 'iphone',
-                'price' => '20000',
-                'quantity' => '12'
+                'name' => 'iPhone 16',
+                'description' => 'iPhone mới nhất',
+                'price' => 20000,
+                'quantity' => 12,
+                'image' => 'iphone_16.png',
+                'category_id' => 4 // Assuming 'iphone' has id 4
             ],
             [
-                'name' => 'ip15 promax',
-                'description' => 'iphone',
-                'price' => '30000',
-                'quantity' => '7'
+                'name' => 'iPhone 15 Pro Max',
+                'description' => 'iPhone đời mới',
+                'price' => 30000,
+                'quantity' => 7,
+                'image' => 'iphone_15_pro_max.png',
+                'category_id' => 4
             ],
             [
-                'name' => 'ip 14 pro',
-                'description' => 'iphone',
-                'price' => '20000',
-                'quantity' => '23'
+                'name' => 'iPhone 14 Pro',
+                'description' => 'iPhone đời cũ hơn',
+                'price' => 20000,
+                'quantity' => 23,
+                'image' => 'iphone_14_pro.png',
+                'category_id' => 4
             ]
         ]);
     }

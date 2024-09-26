@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('role')->default('user');
             $table->rememberToken();
             $table->timestamps();
@@ -29,24 +31,30 @@ return new class extends Migration
             [
                 'name' => 'admin',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('admin'), // Make sure to hash the password
+                'password' => Hash::make('admin'),
                 'role' => 'admin',
+                'address' => 'HN',
+                'phone' => '035346355',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'user',
                 'email' => 'user@example.com',
-                'password' => Hash::make('user'), // Hash the password
+                'password' => Hash::make('user'),
                 'role' => 'user',
+                'address' => 'HN',
+                'phone' => '0355346448',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'nvh',
+                'name' => 'Nguyễn Văn Hải',
                 'email' => 'nvh@gmail.com',
-                'password' => Hash::make('abCD@1234'), // Hash the password
-                'role' => 'admin',
+                'password' => Hash::make('abCD@1234'),
+                'address' => 'NB',
+                'phone' => '0373194245',
+                'role' => 'user',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

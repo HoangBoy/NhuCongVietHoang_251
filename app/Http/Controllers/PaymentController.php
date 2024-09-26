@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CartItem;
 
 class PaymentController extends Controller
 {
@@ -22,7 +22,6 @@ class PaymentController extends Controller
 
         $totalAmount = 0;
         $products = [];
-
         foreach ($cartDetails as $productId => $cartDetail) {
             $cartDetail = json_decode($cartDetail, true);
             $quantity = $quantities[$productId];
@@ -31,6 +30,17 @@ class PaymentController extends Controller
             $totalPrice = $quantity * $price;
             $totalAmount += $totalPrice;
 
+            // Giảm số lượng sản phẩm trong database
+            $product = Product::find($productId);
+            if ($product) {
+                if ($product->quantity >= $quantity) {
+                    $product->quantity -= $quantity;
+                    $product->save();
+                } else {
+                    return redirect()->route('carts.index')->with('error', 'Số lượng sản phẩm "' . $product->name . '" không đủ trong kho.');
+                }
+            }
+
             $products[] = [
                 'id' => $productId,
                 'name' => $cartDetail['name'],
@@ -38,17 +48,6 @@ class PaymentController extends Controller
                 'price' => $price,
                 'total_price' => $totalPrice,
             ];
-        }
-
-        // Giảm số lượng sản phẩm trong database
-        $product = Product::find($productId);
-        if ($product) {
-            if ($product->quantity >= $quantity) {
-                $product->quantity -= $quantity;
-                $product->save();
-            } else {
-                return redirect()->route('carts.index')->with('error', 'Số lượng sản phẩm "' . $product->name . '" không đủ trong kho.');
-            }
         }
 
         // Áp dụng mã giảm giá nếu có
@@ -71,7 +70,15 @@ class PaymentController extends Controller
             'customer_name' => $customerName,
             'date' => now()->format('d/m/Y')
         ];
-        
+        // Xóa các mục trong giỏ hàng theo `cart_item_id`
+        //trích xuất thuoccj tính trong $productId để frame work tạo tạo cartDetail dựa trên khoá ngoại
+        foreach ($cartDetails as $cartItemId => $cartDetail) {
+
+            // $cartDetailArray = json_decode($cartDetail, true);
+            CartItem::where('id', $cartItemId)->delete();
+        }
+        // Xóa giỏ hàng trong session
+        session()->forget('carts'); // Hoặc session()->flush(); để xóa tất cả
         $pdf = Pdf::loadView('invoices.invoice', compact('invoiceData'));
 
         // Tải hóa đơn dưới dạng PDF

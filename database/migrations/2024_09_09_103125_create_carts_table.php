@@ -18,6 +18,8 @@ class CreateCartsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             // $table->json('items'); // Store cart items as JSON
+            $table->decimal('total_price', 10, 2)->nullable();
+            $table->string('status')->default('pending')->nullable();
         });
     }
 

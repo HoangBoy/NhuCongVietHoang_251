@@ -1,3 +1,4 @@
+<!-- create.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -13,7 +14,7 @@
         </div>
     </div>
 
-    <form id="product-form" action="{{ route('admin.products.store') }}" method="POST">
+    <form id="product-form" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -51,68 +52,16 @@
                     </select>
                 </div>
             </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Product Image:</strong>
+                    <input type="file" name="image" class="form-control" accept="image/*" required>
+                </div>
+            </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </form>
 </div>
-
-<!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Include jQuery Validation Plugin -->
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
-
-<script>
-$(document).ready(function() {
-    $("#product-form").validate({
-        rules: {
-            name: {
-                required: true,
-                minlength: 3 // The name must be at least 3 characters long
-            },
-            description: {
-                required: false, // Description is optional
-                minlength: 10 // Minimum length if provided
-            },
-            price: {
-                required: true,
-                number: true, // Must be a number
-                min: 0 // Must be greater than or equal to 0
-            },
-            category_id: {
-                required: true // Category selection is required
-            }
-        },
-        messages: {
-            name: {
-                required: "Please enter the product name",
-                minlength: "The name must be at least 3 characters long"
-            },
-            description: {
-                minlength: "The description must be at least 10 characters long"
-            },
-            price: {
-                required: "Please enter the price",
-                number: "Please enter a valid number",
-                min: "The price must be at least 0"
-            },
-            category_id: {
-                required: "Please select a category"
-            }
-        },
-        errorElement: "span",
-        errorPlacement: function(error, element) {
-            error.addClass("invalid-feedback");
-            element.closest(".form-group").append(error);
-        },
-        highlight: function(element, errorClass, validClass) {
-            $(element).addClass("is-invalid").removeClass("is-valid");
-        },
-        unhighlight: function(element, errorClass, validClass) {
-            $(element).addClass("is-valid").removeClass("is-invalid");
-        }
-    });
-});
-</script>
 @endsection

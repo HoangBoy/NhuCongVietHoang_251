@@ -1,4 +1,3 @@
-<!-- resources/views/products/edit.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -14,32 +13,32 @@
         </div>
     </div>
 
-    <form action="{{ route('admin.products.update', $product->id) }}" method="POST">
+    <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Name:</strong>
-                    <input type="text" name="name" value="{{ $product->name }}" class="form-control" placeholder="Name" required>
+                    <input type="text" name="name" value="{{ old('name', $product->name) }}" class="form-control" placeholder="Name" required>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Description:</strong>
-                    <textarea class="form-control" style="height:150px" name="description" placeholder="Description">{{ $product->description }}</textarea>
+                    <textarea class="form-control" style="height:150px" name="description" placeholder="Description">{{ old('description', $product->description) }}</textarea>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Price:</strong>
-                    <input type="number" name="price" value="{{ $product->price }}" class="form-control" placeholder="Price" required>
+                    <input type="number" name="price" value="{{ old('price', $product->price) }}" class="form-control" placeholder="Price" required>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Quantity:</strong>
-                    <input type="number" name="quantity" class="form-control" value="{{ $product->quantity }}" placeholder="Quantity" required>
+                    <input type="number" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}" placeholder="Quantity" required>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -53,6 +52,17 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Product Image:</strong>
+                    <input type="file" name="image" class="form-control" accept="image/*">
+                    @if($product->image)
+                        <div class="mt-2">
+                            <img src="{{ asset('images/' . $product->image) }}" alt="Product Image" style="max-width: 150px;">
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

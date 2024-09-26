@@ -1,4 +1,3 @@
-<!-- resources/views/products/show.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -42,6 +41,16 @@
             <div class="form-group">
                 <strong>Category:</strong>
                 {{ $product->category->name }}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Image:</strong>
+                @if($product->image)
+                    <img src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                @else
+                    <p>No image available</p>
+                @endif
             </div>
         </div>
     </div>

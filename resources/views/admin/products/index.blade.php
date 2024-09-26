@@ -1,4 +1,4 @@
-<!-- resources/views/products/index.blade.php -->
+<!-- index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -13,7 +13,6 @@
             </div>
         </div>
     </div>
-    <!-- <h1>Quantity</h1> -->
 
     @if ($message = Session::get('success'))
         <div class="alert alert-success">
@@ -30,6 +29,7 @@
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Category</th>
+                <th>Image</th> <!-- New column for image -->
                 <th>Action</th>
             </tr>
         </thead>
@@ -41,7 +41,14 @@
                     <td>{{ $product->description }}</td>
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->quantity }}</td>
-                    <td>{{ $product->category->name }}</td> <!-- Hiển thị tên danh mục -->
+                    <td>{{ $product->category->name }}</td> <!-- Display category name -->
+                    <td>
+                        @if($product->image)
+                        <img src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" style="width: 100px; height: auto;">
+                        @else
+                            No Image
+                        @endif
+                    </td>
                     <td>
                         <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-info btn-sm">View</a>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>

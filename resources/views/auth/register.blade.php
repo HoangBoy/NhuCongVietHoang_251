@@ -41,6 +41,14 @@
                             <label for="password_confirmation" class="form-label">Confirm Password</label>
                             <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
                         </div>
+                        <div>
+                            <label for="address">Address</label>
+                            <input id="address" type="text" name="address" value="{{ old('address') }}" required>
+                        </div>
+                        <div>
+                            <label for="phone">Phone</label>
+                            <input id="phone" type="text" name="phone" value="{{ old('phone') }}" required>
+                        </div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
                 </div>

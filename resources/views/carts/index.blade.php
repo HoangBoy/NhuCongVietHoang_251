@@ -1,4 +1,3 @@
-<!-- views/cart/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -33,6 +32,7 @@
                         <th>Số lượng</th>
                         <th>Giá</th>
                         <th>Danh mục</th>
+                        <th>Trạng thái</th> <!-- Cột trạng thái mới -->
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -44,8 +44,7 @@
                         </td>
                         <td>{{ $details['name'] }}</td>
                         <td>
-                            <!-- Form để cập nhật số lượng -->
-                            <form action="{{ route('carts.store', $id) }}" method="POST">
+                            <form action="{{ route('carts.store', $id) }}" method="POST" style="display:inline;" onsubmit="return handleUpdate(event)">
                                 @csrf
                                 <input type="number" 
                                        name="quantity" 
@@ -62,6 +61,7 @@
                         </td>
                         <td>{{ $details['price'] }}</td>
                         <td>{{ $details['category'] }}</td>
+                        <td>{{ $details['status'] ?? 'Chưa xác định' }}</td> <!-- Hiển thị trạng thái -->
                         <td>
                             <a href="{{ route('products.show', $id) }}" class="btn btn-primary">Xem chi tiết</a>
                             <form action="{{ route('carts.destroy', $id) }}" method="POST" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
@@ -84,4 +84,32 @@
 
     <a href="{{ route('welcome') }}" class="btn btn-primary">Tiếp tục mua sắm</a>
 
+@endsection
+
+@section('scripts')
+    <script>
+        function handleUpdate(event) {
+            event.preventDefault(); 
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); 
+                } else {
+                    alert(data.message); 
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 @endsection

@@ -7,12 +7,25 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // Hiển thị danh sách tất cả các sản phẩm
-    public function index()
+        // Hiển thị danh sách tất cả các sản phẩm
+        public function index(Request $request)
     {
-        $products = Product::with('category')->get(); // Lấy tất cả sản phẩm cùng với danh mục
-        return view('admin.products.index', compact('products')); // Truyền biến $products vào view
+        $query = Product::with('category');
+
+        // Nếu có từ khóa tìm kiếm, thêm điều kiện tìm kiếm
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhereHas('category', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                });
+        }
+
+        $products = $query->get(); // Lấy tất cả sản phẩm sau khi áp dụng tìm kiếm
+
+        return view('admin.products.index', compact('products'));
     }
+
 
     public function create()
     {
@@ -29,8 +42,26 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'category_id' => 'nullable|exists:categories,id',
         ]);
+        // Khởi tạo biến cho tên hình ảnh
+        $imageName = null;
 
-        Product::create($request->all());
+        // Handle file upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+        }
+
+        // Product::create($request->all());
+        // Tạo sản phẩm mới và lưu vào database
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'category_id' => $request->category_id,
+            'image' => $imageName, // Lưu tên hình ảnh vào cơ sở dữ liệu
+        ]);
 
         return redirect()->route('admin.products.index')
                          ->with('success', 'Product created successfully.');
@@ -54,14 +85,43 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'quantity' => 'required|integer',
             'category_id' => 'required|integer|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image upload
         ]);
-
-        $product->update($request->all());
-
+    
+        // Prepare the data to be updated
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'category_id' => $request->category_id,
+        ];
+    
+        // Handle image upload if a new image is provided
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($product->image) {
+                $oldImagePath = public_path('images/' . $product->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $data['image'] = $imageName; // Update image name
+        }
+    
+        // Update the product with new data
+        $product->update($data);
+    
         return redirect()->route('admin.products.index')
                          ->with('success', 'Product updated successfully.');
     }
+    
 
     public function destroy(Product $product)
     {

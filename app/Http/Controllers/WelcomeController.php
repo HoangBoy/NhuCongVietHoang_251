@@ -12,6 +12,10 @@ class WelcomeController extends Controller
     {
         // Lấy tất cả sản phẩm từ database và phân trang
         $products = Product::with('category')->paginate(10);
+        // Kiểm tra đường dẫn hình ảnh cho từng sản phẩm
+        // foreach ($products as $product) {
+        //     dd(asset($product->image)); // Hoặc bạn có thể kiểm tra đường dẫn hoàn chỉnh: asset('images/' . $product->image)
+        // }
         // Trả về view 'welcome' với dữ liệu sản phẩm
         return view('welcome', compact('products'));
     }

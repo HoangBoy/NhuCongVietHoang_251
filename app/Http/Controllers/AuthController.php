@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,8 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:6',
+            'address' => 'nullable|string|max:255', 
+            'phone' => 'nullable|string|max:20',    
         ]);
 
         // Tạo người dùng mới
@@ -30,6 +33,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'address' => $request->address, 
+            'phone' => $request->phone,
             'role' => 'user',
             // 'role' => 'admin',
         ]);
@@ -55,7 +60,6 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
         // Xác thực người dùng
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             // Đăng nhập thành công
@@ -66,6 +70,7 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
+       
     }
 
     // Xử lý đăng xuất
