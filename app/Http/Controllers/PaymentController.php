@@ -6,9 +6,29 @@ use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CartItem;
+use App\Mail\PaymentConfirmationMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class PaymentController extends Controller
 {
+    public function confirmPayment($invoice_id)
+    {
+        // Tìm kiếm đơn hàng trong database bằng order_id
+        $order = Order::find($order_id);
+
+        // Kiểm tra xem đơn hàng có tồn tại không
+        if (!$order) {
+            return redirect()->route('home')->with('error', 'Order not found.');
+        }
+
+        // Cập nhật trạng thái thanh toán của đơn hàng
+        $order->status = 'confirmed'; // hoặc bất kỳ trạng thái nào bạn muốn
+        $order->save();
+
+        // Gửi thông báo hoặc redirect tới trang khác
+        return redirect()->route('home')->with('success', 'Payment confirmed successfully.');
+    }
     public function process(Request $request)
     {
         $quantities = $request->input('quantity');
@@ -70,6 +90,8 @@ class PaymentController extends Controller
             'customer_name' => $customerName,
             'date' => now()->format('d/m/Y')
         ];
+        //gửi email xác nhận thanh toán
+        Mail::to($request->user()->email)->send(new PaymentConfirmationMail($invoiceData));
         // Xóa các mục trong giỏ hàng theo `cart_item_id`
         //trích xuất thuoccj tính trong $productId để frame work tạo tạo cartDetail dựa trên khoá ngoại
         foreach ($cartDetails as $cartItemId => $cartDetail) {
@@ -82,7 +104,7 @@ class PaymentController extends Controller
         $pdf = Pdf::loadView('invoices.invoice', compact('invoiceData'));
 
         // Tải hóa đơn dưới dạng PDF
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('invoice.pdf')->with('success', 'Sản phẩm đã được thanh toán thành công.');
     }
 
     /**
