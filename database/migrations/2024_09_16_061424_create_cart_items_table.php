@@ -16,6 +16,8 @@ class CreateCartItemsTable extends Migration
             $table->integer('quantity');
             $table->decimal('price', 10, 2)->nullable();
             $table->timestamps();
+            // Ràng buộc duy nhất để ngăn không cho sản phẩm giống nhau trong cùng một giỏ hàng
+            $table->unique(['cart_id', 'product_id'], 'unique_cart_product');
         });
         
     }

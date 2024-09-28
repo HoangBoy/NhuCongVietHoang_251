@@ -29,22 +29,27 @@
     </li>
     <!-- Cart Link -->
     @auth
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('carts.index') }}">Cart 
-                       
-                    </a>
-                </li>
-                @endauth
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('carts.index') }}">Cart</a>
+        </li>
+    <!-- Order Link -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('orders.index') }}">Order</a>
+        </li>
+    @endauth
     <!-- Thêm liên kết đăng ký và đăng nhập -->
-    @guest
+    @guest <!-- kiểm tra có phải là khách(người dùng mới vào ) -->
+    <!-- Hiển thị đăng ký đăng nhập cho guest(khách) -->
     <li class="nav-item">
     <a class="nav-link" href="{{ route('register') }}">Register</a>
     </li>
     <li class="nav-item">
     <a class="nav-link" href="{{ route('login') }}">Login</a>
     </li>
+    <!-- không phải khách hiển thị logout -->
     @else
     <li class="nav-item">
+    <!-- onclick="event.preventDefault() chặn hành động gọi click khi chọn thẻ a và thay thế bằng gọi submit form document.getElementById('logout-form').submit(); -->
     <a class="nav-link" href="{{ route('logout') }}"
     onclick="event.preventDefault();
 document.getElementById('logout-form').submit();">

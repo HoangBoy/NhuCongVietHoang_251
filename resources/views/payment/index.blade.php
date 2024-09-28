@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app') 
 
 @section('content')
     <h1>Thông tin thanh toán</h1>
@@ -11,7 +11,6 @@
 
     <form action="{{ route('payment.process') }}" method="POST">
         @csrf
-
         <table class="table">
             <thead>
                 <tr>
@@ -24,19 +23,22 @@
             <tbody>
                 @php $totalAmount = 0; @endphp
 
-                @foreach($cartDetails as $product)
+                @foreach($cartItemDetails as $cartItemDetail) <!-- Sử dụng $cartItemDetails thay cho $cartDetails -->
                     @php 
-                        $quantity = $product['quantity'];
-                        $price = $product['price'];
-                        $totalPrice = $product['total_price'];
+                        $quantity = $cartItemDetail['quantity'];
+                        $price = $cartItemDetail['price'];
+                        $totalPrice = $cartItemDetail['total_price'];
                         $totalAmount += $totalPrice;
                     @endphp
 
                     <tr>
-                        <td>{{ $product['name'] }}</td>
+                        <td>{{ $cartItemDetail['name'] }}</td>
                         <td>
-                            <input type="hidden" name="cartDetails[{{ $product['id'] }}]" value="{{ json_encode($product) }}" id="product_{{ $product['id'] }}">
-                            <input type="number" name="quantity[{{ $product['id'] }}]" value="{{ $quantity }}" min="1" class="form-control" readonly>
+                            <!-- Truyền chi tiết cart item dưới dạng JSON -->
+                            <input type="hidden" name="cartItemDetails[{{ $cartItemDetail['id'] }}]" value="{{ json_encode($cartItemDetail) }}" id="product_{{ $cartItemDetail['id'] }}">
+                            
+                            <!-- Truyền số lượng sản phẩm -->
+                            <input type="number" name="quantity[{{ $cartItemDetail['product_id'] }}]" value="{{ $quantity }}" min="1" class="form-control" readonly>
                         </td>
                         <td>{{ number_format($price, 0, ',', '.') }} đ</td>
                         <td>{{ number_format($totalPrice, 0, ',', '.') }} đ</td>
@@ -49,6 +51,9 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- Hidden totalAmount để truyền đến server -->
+        <input type="hidden" name="totalAmount" value="{{ $totalAmount }}">
 
         <!-- Mã giảm giá -->
         <div class="form-group">

@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\OrderController;
 use App\Mail\PaymentConfirmationMail;
 
 // Trang chủ welcome
@@ -72,6 +73,11 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/payment/{invoice_id}', [PaymentController::class, 'confirmPayment'])->name('payment.confirmation');
-    
+    // Route để bắt đầu thanh toán
+    Route::post('/vnpay/pay', [VNPayController::class, 'createPayment'])->name('vnpay.pay');
+
+    // Route để xử lý kết quả trả về từ VNPay
+    Route::get('/vnpay-return', [VNPayController::class, 'returnPayment'])->name('vnpay.return');
+    Route::resource('orders', OrderController::class)->only(['index', 'show']);
 });
 

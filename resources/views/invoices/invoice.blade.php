@@ -41,7 +41,6 @@
                         <td>{{ $product['name'] }}</td>
                         <td>{{ $product['quantity'] }}</td>
                         <td>{{ number_format($product['price'], 0, ',', '.') }} đ</td>
-                        <td>{{ number_format($product['total_price'], 0, ',', '.') }} đ</td>
                     </tr>
                 @endforeach
             </tbody>

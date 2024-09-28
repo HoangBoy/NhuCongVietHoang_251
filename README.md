@@ -398,3 +398,4 @@ php artisan optimize:clear
     php artisan cache:clear
     //để nhận cập nhật cấu hình ở file config .env
     php artisan config:clear
+9. php artisan make:policy OrderPolicy --model=Order

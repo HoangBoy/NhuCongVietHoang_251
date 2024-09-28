@@ -43,7 +43,7 @@
                 @foreach($carts as $id => $details)
                     <tr>
                         <td>
-                            <input type="checkbox" name="selected_products[{{ $id }}]" value="{{ json_encode($details) }}" id="product_{{ $id }}">
+                            <input type="checkbox" name="selected_cartItems[{{ $id }}]" value="{{ json_encode($details) }}" id="product_{{ $id }}">
                         </td>
                         <td>{{ $details['name'] }}</td>
                         <td>
