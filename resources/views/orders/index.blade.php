@@ -1,5 +1,3 @@
-<!-- {{-- resources/views/orders/index.blade.php --}} -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -16,6 +14,7 @@
                     <th>Trạng Thái</th>
                     <th>Ngày Đặt Hàng</th>
                     <th>Hành Động</th>
+                    <th>Chi Tiết Sản Phẩm</th> <!-- Thêm cột cho chi tiết sản phẩm -->
                 </tr>
             </thead>
             <tbody>
@@ -29,11 +28,22 @@
                                 {{ $order->customer_name }}
                             @endif
                         </td>
-                        <td>{{ number_format($order->amount, 0, ',', '.') }} VND</td>
+                        
+                        <td>{{ number_format($order->amount, 0, ',', '.') }} đ</td>
                         <td>{{ ucfirst($order->status) }}</td>
                         <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                         <td>
                             <a href="{{ route('orders.show', $order->id) }}" class="btn btn-info btn-sm">Xem Chi Tiết</a>
+                        </td>
+                        <td>
+                            <ul>
+                                @foreach($order->orderItems as $item)
+                                    <li>
+                                        <img src="{{ asset('images/' . $item->product->image) }}" alt="{{ $item->product->name }}" width="50"> <!-- Hiển thị hình ảnh -->
+                                        {{ $item->name }} ({{ $item->quantity }}) - {{ number_format($item->price, 0, ',', '.') }} đ
+                                    </li>
+                                @endforeach
+                            </ul>
                         </td>
                     </tr>
                 @endforeach

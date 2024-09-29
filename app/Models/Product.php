@@ -15,5 +15,10 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    // Accessor for formatted price
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->price, 0, ',', '.') . ' VNĐ';
+    }
 }
 

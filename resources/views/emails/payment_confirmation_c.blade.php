@@ -35,6 +35,15 @@
         .summary {
             margin-top: 20px;
         }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -71,5 +80,25 @@
             <p>Coupon Applied: {{ $invoiceData['coupon'] }}</p>
         @endif
     </div>
+
+    <p>Vui lòng xác nhận thanh toán tại đây:
+        <form action="{{ route('payment.confirmation') }}"" method='POST' ">
+            @csrf
+            <input type="hidden" 
+                                    name="order_id" 
+                                    value="{{ $invoiceData['order_id'] }}" 
+                                    min="1" 
+                                    class="form-control">
+            <input type="hidden" 
+                                    name="order_id" 
+                                    value="{{ $invoiceData['payment_method'] }}" 
+                                    min="1" 
+                                    class="form-control">
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">Xác nhận thanh toán khi nhận hàng</button>
+            </div>
+        </form>
+    </p>
+    <!-- <p>Vui lòng xác nhận thanh toán tại đây: <a href="{{ route('payment.confirmation', ['invoice_id' => $invoiceData['id']]) }}">Xác nhận thanh toán</a></p> -->
 </body>
 </html>

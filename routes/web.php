@@ -50,29 +50,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/payment', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
-    Route::get('/sendEmail', function () {
-        $invoiceData = [
-            'products' => [
-                ['name' => 'Product 1', 'quantity' => 2, 'price' => 100, 'total_price' => 200],
-                ['name' => 'Product 2', 'quantity' => 1, 'price' => 150, 'total_price' => 150],
-                // ... các sản phẩm khác
-            ],
-            'total_amount' => 200,
-            'coupon' => 'coupon',
-            'id' => 'invoice_id',
-            'customer_name' => 'custom_name',
-            'date' => now()->format('d/m/Y')
-        ];
-        // dd(env('DB_DATABASE')); 
-        //dd(env('MAIL_HOST')); 
 
-        // Tạo một instance của PaymentConfirmationMail
-        Mail::to('nvhai227@gmail.com')->send(new PaymentConfirmationMail($invoiceData));
-        
-        return 'Email sent successfully!'; // Trả về thông báo sau khi gửi email
-    });
+    Route::get('/payment/confirm', [PaymentController::class, 'confirmPayment'])->name('payment.confirm');
 
-    Route::get('/payment/{invoice_id}', [PaymentController::class, 'confirmPayment'])->name('payment.confirmation');
     // Route để bắt đầu thanh toán
     Route::post('/vnpay/pay', [VNPayController::class, 'createPayment'])->name('vnpay.pay');
 

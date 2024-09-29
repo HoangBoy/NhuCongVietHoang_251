@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Mail;
 class PaymentConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $invoiceData;
+    public $orderData;
     /**
      *  Khởi tạo một instance mới của `PaymentConfirmationMail`..
      */
-    public function __construct($invoiceData)
+    public function __construct($orderData)
     {
-        $this->invoiceData = $invoiceData;
+        $this->orderData = $orderData;
     }
 
     /**
@@ -60,8 +60,6 @@ class PaymentConfirmationMail extends Mailable
     {
         return $this->subject('Payment Confirmation')
                     ->view('emails.payment_confirmation')
-                    ->with([
-                        'invoiceData' => $this->invoiceData,
-                    ]);; // Specify the view for the email
+                    ->with('orderData', $this->orderData);
     }
 }

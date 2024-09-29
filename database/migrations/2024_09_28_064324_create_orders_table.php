@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            // $table->string('invoice_id')->unique(); // Mã hoá đơn
             $table->string('txn_ref')->unique(); // Mã giao dịch
             $table->unsignedBigInteger('user_id'); // Liên kết với người dùng
             $table->string('order_info')->nullable(); // Thông tin đơn hàng

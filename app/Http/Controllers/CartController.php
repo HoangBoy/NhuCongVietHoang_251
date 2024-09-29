@@ -14,7 +14,7 @@ class CartController extends Controller
         // Kiểm tra nếu có giỏ hàng trong session, nếu không, nạp từ DB
         if (!session()->has('carts')) {
             //tìm cart dựa vào user_id giá trị là auth->id(id người dùng đã đăng nhập)->lastest(cái mới nhất)
-            $carts = Cart::where('user_id', auth()->id())->latest()->first();
+            $carts = Cart::with('items.product')->where('user_id', auth()->id())->latest()->first();
             if ($carts) {
                 $cartItems = $carts->items->mapWithKeys(function ($item) {
                     //item là cartItem
@@ -26,7 +26,8 @@ class CartController extends Controller
                         "name" => $item->product->name,
                         "quantity" => $item->quantity,
                         "price" => $item->product->price,
-                        "category" => $item->product->category->name,
+                        "image" => $item->product->image,
+                        "category" => $item->product->category->name
                     ]];
                 });
                 session()->put('carts', $cartItems);
@@ -82,7 +83,6 @@ class CartController extends Controller
             $cartItemByProductId['quantity'] += $requestedQuantity;
             $cartItemByProductId['price'] = $product->price*$requestedQuantity; // Cập nhật giá nếu cần
             $cartSession->put($cartItemId, $cartItemByProductId);
-
          }  else {
             //Tạo mới cartId cho người dùng sở hữu tương ứng
             if (auth()->check()) {
@@ -105,6 +105,7 @@ class CartController extends Controller
             // thêm thuộc tính cần hiển thị lên trang
             $cartItem = array_merge($cartItem, [
                 'name' => $product->name, 
+                'image' => $product->image,
                 'category' => $product->category->name,
             ]);
             $cartSession->put($createdCartItem->id,$cartItem);

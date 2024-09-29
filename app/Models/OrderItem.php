@@ -11,6 +11,7 @@ class OrderItem extends Model
 
     protected $fillable = [
         'order_id',
+        'cart_item_id',
         'product_id',
         'name',
         'quantity',
@@ -24,6 +25,8 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class);
     }
 
+    // Giả sử bạn đang lấy tất cả các OrderItem
+    //$orderItems = OrderItem::with('product')->get();    
     // Quan hệ với Product
     public function product()
     {

@@ -18,10 +18,10 @@ class OrderController extends Controller
         // Kiểm tra nếu người dùng là admin
         if ($user->is_admin) {
             // Admin xem tất cả đơn hàng
-            $orders = Order::with('orderItems', 'user')->orderBy('created_at', 'desc')->paginate(20);
+            $orders = Order::with('orderItems.product', 'user')->orderBy('created_at', 'desc')->paginate(20);
         } else {
             // Người dùng xem đơn hàng của chính họ
-            $orders = Order::with('orderItems')
+            $orders = Order::with('orderItems.product')
                            ->where('user_id', $user->id)
                            ->orderBy('created_at', 'desc')
                            ->paginate(20);

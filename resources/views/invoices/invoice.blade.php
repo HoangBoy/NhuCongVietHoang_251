@@ -39,8 +39,9 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $product['name'] }}</td>
-                        <td>{{ $product['quantity'] }}</td>
+                        <td style="text-align: center;">{{ $product['quantity'] }}</td>
                         <td>{{ number_format($product['price'], 0, ',', '.') }} đ</td>
+                        <td>{{ number_format($product['price'] * $product['quantity'], 0, ',', '.') }} đ</td>
                     </tr>
                 @endforeach
             </tbody>

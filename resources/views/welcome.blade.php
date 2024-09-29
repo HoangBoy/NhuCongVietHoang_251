@@ -1,4 +1,3 @@
-<!-- views/welcome.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -20,19 +19,22 @@
                         <h5 class="card-title">{{ $product->name }}</h5>
                         <p class="card-text text-truncate" style="height: 40px; overflow: hidden;">{{ Str::limit($product->description, 50) }}</p>
                         <p class="card-text"><strong>Quantity:</strong> {{ $product->quantity }}</p>
-                        <p class="card-text"><strong>Price:</strong> ${{ number_format($product->price, 2) }}</p>
+                        <p class="card-text"><strong>Price:</strong> {{ number_format($product->price, 0, ',', '.') }} đ</p>
                         <p class="card-text"><strong>Category:</strong> {{ optional($product->category)->name }}</p>
                     </div>
                     <!-- Hover elements start -->
-                    <div class="card-footer d-flex justify-content-around align-items-center bg-white mt-auto product-hover-elements" style="height: 100px;">
+                    <div class="card-footer d-flex justify-content-between align-items-center bg-white mt-auto product-hover-elements" style="height: 100px;">
                         <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-primary btn-sm">View Details</a>
                         <!-- Add to Cart Form -->
-                        <form action="{{ route('carts.store', $product->id) }}" method="POST" class="d-flex flex-column">
+                        <form action="{{ route('carts.store', $product->id) }}" method="POST" class="d-flex align-items-center">
                             @csrf
-                            <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" style="width: 60px;">
-                            <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
+                            <div class="input-group" style="width: 150px;">
+                                <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 70px;">
+                                <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
+                            </div>
                         </form>
                     </div>
+
                     <!-- Hover elements end -->
                 </div>
             </div>
@@ -59,5 +61,10 @@
     .product-card:hover .product-hover-elements {
         opacity: 1;
         visibility: visible;
+    }
+
+    /* Add some margin to the quantity input */
+    .input-group {
+        margin-left: 5px; /* Adjust margin for spacing */
     }
 </style>

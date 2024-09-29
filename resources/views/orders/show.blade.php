@@ -1,5 +1,3 @@
-<!-- {{-- resources/views/orders/show.blade.php --}} -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -23,6 +21,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Hình Ảnh</th> <!-- Thêm cột hình ảnh -->
                 <th>Tên Sản Phẩm</th>
                 <th>Số Lượng</th>
                 <th>Giá (VND)</th>
@@ -32,6 +31,9 @@
         <tbody>
             @foreach($order->orderItems as $item)
                 <tr>
+                    <td>
+                        <img src="{{ asset('images/' . $item->product->image) }}" alt="{{ $item->product->name }}" width="50"> <!-- Hiển thị hình ảnh -->
+                    </td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ number_format($item->price, 0, ',', '.') }}</td>

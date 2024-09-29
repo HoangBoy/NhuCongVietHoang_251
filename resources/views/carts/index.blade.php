@@ -1,6 +1,3 @@
-<!--cart.index.blade.php  -->
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -31,11 +28,12 @@
                 <thead>
                     <tr>
                         <th>Chọn</th>
+                        <th>Hình ảnh</th> <!-- Thêm cột Hình ảnh -->
                         <th>Tên sản phẩm</th>
                         <th>Số lượng</th>
                         <th>Giá</th>
                         <th>Danh mục</th>
-                        <th>Trạng thái</th> <!-- Cột trạng thái mới -->
+                        <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -44,6 +42,9 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="selected_cartItems[{{ $id }}]" value="{{ json_encode($details) }}" id="product_{{ $id }}">
+                        </td>
+                        <td>
+                            <img src="{{ asset('images/' . $details['image']) }}" alt="{{ $details['name'] }}" style="width: 50px; height: auto;"> Hiển thị hình ảnh
                         </td>
                         <td>{{ $details['name'] }}</td>
                         <td>
@@ -62,9 +63,11 @@
                                 <button type="submit" class="btn btn-secondary mt-2">Cập nhật</button>
                             </form>
                         </td>
-                        <td>{{ $details['price'] }}</td>
+                        <td>
+                            {{ number_format($details['price'], 0, ',', '.') }} đ
+                        </td>
                         <td>{{ $details['category'] }}</td>
-                        <td>{{ $details['status'] ?? 'Chưa xác định' }}</td> <!-- Hiển thị trạng thái -->
+                        <td>{{ $details['status'] ?? 'Chưa xác định' }}</td>
                         <td>
                             <a href="{{ route('products.show', $id) }}" class="btn btn-primary">Xem chi tiết</a>
                             <form action="{{ route('carts.destroy', $id) }}" method="POST" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
@@ -86,33 +89,4 @@
     @endif
 
     <a href="{{ route('welcome') }}" class="btn btn-primary">Tiếp tục mua sắm</a>
-
-@endsection
-
-@section('scripts')
-    <script>
-        function handleUpdate(event) {
-            event.preventDefault(); 
-
-            const form = event.target;
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload(); 
-                } else {
-                    alert(data.message); 
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
 @endsection
