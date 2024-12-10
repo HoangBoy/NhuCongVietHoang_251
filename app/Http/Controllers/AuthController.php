@@ -20,13 +20,13 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // Validate dữ liệu đầu vào
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:6',
-            'address' => 'nullable|string|max:255', 
-            'phone' => 'nullable|string|max:20',    
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'password' => 'required|string|confirmed|min:6',
+        //     // 'address' => 'nullable|string|max:255', 
+        //     // 'phone' => 'nullable|string|max:20',    
+        // ]);
 
         // Tạo người dùng mới
         $user = User::create([
@@ -62,7 +62,14 @@ class AuthController extends Controller
         ]);
         // Xác thực người dùng
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // Đăng nhập thành công
+            // Lấy thông tin người dùng đã đăng nhập
+            $user = Auth::user();
+            // Kiểm tra vai trò của người dùng
+            if ($user->role==='admin') {
+                // Nếu là admin, chuyển hướng đến dashboard
+                return redirect()->intended(route('admin.dashboard'))->with('success', 'Welcome to Admin Dashboard.');
+            }
+            // Nếu là user, chuyển hướng đến trang welcome
             return redirect()->intended('home')->with('success', 'You are logged in.');
         }
 
